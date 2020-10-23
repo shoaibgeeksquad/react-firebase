@@ -12,12 +12,11 @@ const SignUp = (props: any) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("")
-    const [error, setError] = useState("")
+    const [error, setError] = useState(false)
     const [activeUser, setActiveUser] = useState(true);
     const [displayError, setDisplayError] = useState({
         password: false,
         name: false,
-        sameAccount: false,
     });
     const [loader, setLoader] = useState(false)
 
@@ -25,7 +24,7 @@ const SignUp = (props: any) => {
         firebase.auth().onAuthStateChanged((user: any) => {
             if ((user && user.uid !== undefined) && (state && state.signUp === "home")) {
                 history.push("/")
-            }else {
+            } else {
                 setActiveUser(false);
             }
         });
@@ -48,6 +47,7 @@ const SignUp = (props: any) => {
         }
         else {
             firebase.auth().createUserWithEmailAndPassword(email, password).then((res: any) => {
+                setError(false);
                 setLoader(true);
                 let duplicate = { ...displayError }
                 duplicate.password = false;
@@ -66,16 +66,12 @@ const SignUp = (props: any) => {
                 history.push("/sign-in")
                 setLoader(false)
             })
-            // .catch((error: any) => {
-            //     if (error.message){ 
-            //         // === "auth/email-already-in-use") {
-            //         console.log("error 2",error && error.message === "EMAIL_EXISTS")
-            //         setLoader(false)
-            //         let duplicate = { ...displayError }
-            //         duplicate.sameAccount = false;
-            //         setDisplayError({ ...duplicate })
-            //     }
-            // })
+                .catch((error: any) => {
+                    if (error) {
+                        setLoader(false)
+                        setError(true);
+                    }
+                })
         }
     };
 
@@ -84,7 +80,11 @@ const SignUp = (props: any) => {
             {!activeUser ?
                 <div>
                     {displayError.password ?
-                        < ErrorModal setDisplayError={setDisplayError} displayError={displayError} first="IncorrectPassword!" second="Password not matched" />
+                        < ErrorModal  displayError={displayError} first="IncorrectPassword!" second="Password not matched" />
+                        : ""}
+
+                    {error ?
+                        < ErrorModal  displayError={displayError} first="failed!" second="Email already exits" />
                         : ""}
                     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
                         {!loader ?
