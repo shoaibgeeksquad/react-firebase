@@ -8,7 +8,7 @@ const Header = (props: any) => {
 
     const logout = () => {
         firebase.auth().signOut().then((response: any) => {
-            history.push("/signin")
+            history.push("/sign-in")
         })
     }
 

@@ -25,8 +25,8 @@ const Routes = (props:any) => {
     return (
         <div>
             <Switch>
-                <Route path={"/signin"} component={SignIn} exact={true} />
-                <Route path={"/signup"} component={SignUp} exact={true} />
+                <Route path={"/sign-in"} component={SignIn} exact={true} />
+                <Route path={"/sign-up"} component={SignUp} exact={true} />
                 <Route path={"/"} component={PrivateRoute} exact={true} />
             </Switch>
         </div>

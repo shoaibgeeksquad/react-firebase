@@ -12,34 +12,36 @@ const SignIn = (props: any) => {
     const [password, setPassword] = useState("");
     const [loader, setLoader] = useState(false);
     const [activeUser, setActiveUser] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user: any) => {
             if ((user && user.uid !== undefined) && (state && state.signUp === "home")) {
-                // setLoggedIn(dispatch, true);
                 history.push("/")
             } else {
                 setActiveUser(false);
-                // setLoggedIn(dispatch, false);
             }
         });
     }, [])
 
     const signUp = (event: any) => {
-        setLoader(true);
         event.preventDefault();
+        setLoader(true);
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((data: any) => {
                 if (data) {
+                    setError(false);
                     // setLoggedIn(dispatch, true);
-                    setSignUpMode(dispatch,"home")
+                    setSignUpMode(dispatch, "home")
                     history.push("/");
                     setLoader(false);
                 }
             })
             .catch((error: any) => {
-                setLoader(false);
-                window.alert(error);
+                if (error) {
+                    setLoader(false);
+                    setError(true)
+                }
             });
     }
 
@@ -80,16 +82,22 @@ const SignIn = (props: any) => {
                                             />
                                         </div>
                                     </div>
-
+                                    {error ?
+                                        <div>
+                                            <p className="text-red-800 pt-3">Incorrect email or password!</p>
+                                        </div>
+                                        :
+                                        ""}
                                     <div className="mt-6 flex items-center justify-between">
                                         <div className="flex items-center">
                                             <input id="remember_me" type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" />
                                             <label className="ml-2 block text-sm leading-5 text-gray-900">
                                                 Remember me
-                                </label>
+                                            </label>
                                         </div>
-                                        <div className="text-sm leading-5">
-                                            <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+                                        <div className="text-sm leading-5 cursor-pointer"
+                                            onClick={() => history.push("/sign-up")}>
+                                            <a className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
                                                 Create new account
                                 </a>
                                         </div>

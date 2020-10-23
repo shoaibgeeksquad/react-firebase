@@ -2,11 +2,11 @@ import React, { createContext, useReducer } from 'react';
 import { Reducer } from '../reducer'
 import { getAllUser, deleteSingleUser, upadteUserById , setLoggedIn , setSignUpMode} from '../actions/getDetail'
 
-// Initial state
+// Initial state 
 const initialState = {
-  getDetail: [],
+  getDetail: [], 
   loggedIn:false,
-  signUp:"home"
+  signUp:"home"  
 }
 
 // Create context

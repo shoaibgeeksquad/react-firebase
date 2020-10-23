@@ -13,7 +13,7 @@ const PrivateRoute = (props:any) => {
             if ((user && user.uid !== undefined) && (state && state.signUp === "home") ) {
                 history.push("/")
             } else {
-                history.push("/signin")
+                history.push("/sign-in")
             }
         });
     }, [])

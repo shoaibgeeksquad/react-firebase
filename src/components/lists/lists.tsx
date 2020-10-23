@@ -28,7 +28,7 @@ const Index = (props: any) => {
         <div>
             {/* form */}
             {/* <div>
-                <input 
+                <input
                     type="text"
                     value={updateData ? updateData.name : ""}
                     onChange={event => {
